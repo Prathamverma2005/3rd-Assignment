@@ -1,0 +1,41 @@
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+int performOp(char op, int val1, int val2) {
+    switch (op) {
+        case '+': return val1 + val2;
+        case '-': return val1 - val2;
+        case '*': return val1 * val2;
+        case '/': return val1 / val2;
+        default: return 0;
+    }
+}
+int evaluatePostfix(const string& postfix) {
+    stack<int> s;
+
+    for (char ch : postfix) {
+        if (isdigit(ch)) {
+            s.push(ch - '0');
+        } else {
+            int val2 = s.top(); s.pop();
+            int val1 = s.top(); s.pop();
+            int result = performOp(ch, val1, val2);
+            s.push(result);
+        }
+    }
+
+    return s.top(); 
+}
+
+int main() {
+    string postfixExpr;
+    cout << "Enter a postfix expression (digits and operators only): ";
+    cin >> postfixExpr;
+
+    int result = evaluatePostfix(postfixExpr);
+    cout << "Result of postfix evaluation: " << result << endl;
+
+    return 0;
+}
